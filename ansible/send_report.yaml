@@ -1,0 +1,29 @@
+- name: Generate and send VM health report
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - group_vars/all.yaml
+  vars:
+    timestamp: "{{ lookup('pipe', 'date +\"%Y-%m-%d %H:%M:%S\"') }}"
+    collected_metrics: "{{ all_metrics }}"
+  tasks:
+    - name: Debug - Show collected metrics
+      debug:
+        var: collected_metrics
+
+    - name: Render HTML report
+      template:
+        src: templates/report_email_animated.html.j2
+        dest: /tmp/vm_health_report.html
+
+    - name: Send email with report
+      mail:
+        host: "{{ smtp_server }}"
+        port: "{{ smtp_port }}"
+        username: "{{ email_user }}"
+        password: "{{ email_pass }}"
+        to: "{{ alert_recipient }}"
+        subject: "📊 VM Health Report - {{ timestamp }}"
+        subtype: html
+        body: "{{ lookup('file', '/tmp/vm_health_report.html') }}"
+        secure: starttls

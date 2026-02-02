@@ -1,0 +1,5 @@
+- name: Configure all dev servers
+  hosts: tag_Environment__dev   # matches the dynamic inventory group
+  become: true                 # escalate privileges to sudo
+  roles:
+    - docker
