@@ -427,20 +427,6 @@ Since `ansible.cfg` sets the inventory path, you can use:
 ansible-playbook playbook.yaml --private-key ../terraform/ans_master_1
 ```
 
-Or create a shell script `run.sh`:
-
-```bash
-#!/bin/bash
-ansible-playbook playbook.yaml \
-  --private-key ../terraform/ans_master_1 \
-  -u ubuntu
-```
-
-```bash
-chmod +x run.sh
-./run.sh
-```
-
 ---
 
 ## 📧 Email Report Output
@@ -711,57 +697,5 @@ email_pass: "{{ lookup('env', 'SMTP_PASS') }}"
 - [AWS EC2 Dynamic Inventory](https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html)
 - [Ansible Vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
 - [Gmail SMTP Settings](https://support.google.com/mail/answer/7126229)
-
----
-
-## 🎓 Learning Path
-
-1. ✅ **Basic Setup:** Get dynamic inventory working
-2. ✅ **Metric Collection:** Understand how metrics are gathered
-3. ✅ **Report Generation:** Customize HTML template
-4. ✅ **Email Delivery:** Configure Gmail App Password
-5. 🔄 **Automation:** Set up cron jobs
-6. 🔐 **Security:** Implement Ansible Vault
-7. 📊 **Monitoring:** Add custom metrics
-8. 🚨 **Alerting:** Implement conditional alerts
-
----
-
-## 🔄 Workflow Summary
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  1. Terraform creates EC2 instances                     │
-│     (with Environment=dev tag)                          │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│  2. Ansible queries AWS API                             │
-│     (discovers instances via dynamic inventory)         │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│  3. collect_metrics.yaml runs                           │
-│     - SSH to each EC2 instance                          │
-│     - Collect CPU, memory, disk metrics                 │
-│     - Store in host_metrics fact                        │
-│     - Aggregate all metrics in all_metrics              │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│  4. send_report.yaml runs                               │
-│     - Render HTML template with metrics                 │
-│     - Send email via Gmail SMTP                         │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│  5. Email received with beautiful HTML report           │
-│     ✅ Success!                                         │
-└─────────────────────────────────────────────────────────┘
-```
 
 ---
