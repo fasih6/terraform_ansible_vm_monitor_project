@@ -120,14 +120,14 @@ Main Ansible configuration file:
 ```ini
 [defaults]
 inventory = ./inventory/aws_ec2.yaml    # Points to dynamic inventory
-host_key_checking = False               # Disable SSH host key checking
+host_key_checking = False               # SSH usually checks the remote server’s fingerprint the first time you connect.Setting this to False disables the prompt.
 remote_user = ubuntu                    # Default SSH user
-gathering = smart                       # Only gather facts when needed
+gathering = smart                       # smart → only gathers facts if needed for a task.
 deprecation_warnings = False            # Suppress deprecation warnings
-retry_files_enabled = False             # Don't create .retry files
+retry_files_enabled = False             # By default, Ansible creates .retry files for failed hosts. False disables this
 
 [ssh_connection]
-pipelining = True                       # Performance optimization
+pipelining = True                       # Normally, Ansible talks to your server over SSH by sending multiple commands for each task. With pipelining, Ansible combines some of these commands into one.
 ```
 
 **Key Benefits:**
